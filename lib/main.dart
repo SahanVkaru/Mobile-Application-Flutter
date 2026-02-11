@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'core/theme.dart';
+import 'core/constants.dart';
+import 'features/weighing/presentation/pages/weighing_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Hive
+  await Hive.initFlutter();
+  await Hive.openBox(AppStrings.hiveBoxName);
+
+  runApp(const ProviderScope(child: TeaSmartApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class TeaSmartApp extends ConsumerWidget {
+  const TeaSmartApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
-      home: MyApp1(),
-    );
-  }
-}
-
-class MyApp1 extends StatelessWidget {
-  const MyApp1({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(alignment: Alignment.center, child: Text('Hello Putha')),
+      debugShowCheckedModeBanner: false,
+      title: AppStrings.appName,
+      theme: AppTheme.lightTheme,
+      home: const WeighingScreen(),
     );
   }
 }
